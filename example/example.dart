@@ -3,7 +3,7 @@
 
 
 void main() {
-  File f = new File("${(new Path(new Options().script)).directoryPath}/../example/thinice.graphml");
+  File f = new File("${(new Path(new Options().script)).directoryPath}/thinice.graphml");
   GraphML graph = new GraphML.fromFile(f);
   
   var n = new Node("Newly created node");
@@ -17,7 +17,7 @@ void main() {
   
   graph.addEdge(n, cn);
 
-  File f2 = new File("/Users/filiph/Desktop/new.graphml");
+  File f2 = new File("${(new Path(new Options().script)).directoryPath}/new.graphml");
   var raf = f2.openSync(FileMode.WRITE);
   raf.writeStringSync(graph.toString().replaceAll('\r', '\n'), Encoding.UTF_8);
   raf.close();
