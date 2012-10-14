@@ -1,0 +1,7 @@
+name:  graphml
+description:  A sample application
+dependencies: 
+#  unittest: { sdk: unittest }
+  xml:
+    git: https://github.com/filiph/dart-xml.git
+
