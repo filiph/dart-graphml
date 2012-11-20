@@ -132,7 +132,7 @@ class GraphML {
     
     // use hacks to get rid of nodes that dart-xml can't handle  
     xml = xml
-        .replaceAll(const RegExp(r"<\?.*?\?>"), "")  // get rid of PI node(s)
+        .replaceAll(new RegExp(r"<\?.*?\?>"), "")  // get rid of PI node(s)
         .replaceAll("<$_yEdPrefix", "<$_yEdPrefixSub")  // get rid of `y:`
         .replaceAll("</$_yEdPrefix", "</$_yEdPrefixSub");
     
