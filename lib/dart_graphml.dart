@@ -1,8 +1,8 @@
-#library("Dart GraphML");
+library Dart_GraphML;
 
-#import('dart:io');
-#import('dart:math');
-#import('package:xml/xml.dart');
+import 'dart:io';
+import 'dart:math';
+import 'package:xml/xml.dart';
 
 class Node {
   String id;

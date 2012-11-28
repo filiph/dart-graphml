@@ -1,5 +1,5 @@
-#import('dart:io');
-#import('package:graphml/dart_graphml.dart');
+import 'dart:io';
+import 'package:graphml/dart_graphml.dart';
 
 
 void main() {
