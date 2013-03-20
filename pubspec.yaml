@@ -5,4 +5,4 @@ description:  A very simple and hacky reader and writer of graphml
               files.
 dependencies: 
   xml: 
-    git: https://github.com/prujohn/dart-xml
+    git: https://github.com/filiph/dart-xml
