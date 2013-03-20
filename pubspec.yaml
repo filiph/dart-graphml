@@ -1,5 +1,6 @@
 name:  graphml
 description:  A sample application
+version: 0.0.2
 dependencies: 
 #  unittest: { sdk: unittest }
   xml:
