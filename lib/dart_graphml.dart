@@ -325,8 +325,8 @@ class GraphML {
     updateXml();
     
     var strBuf = new StringBuffer();
-    strBuf.add('<?xml version="1.0" encoding="UTF-8" standalone="no"?>');
-    strBuf.add(xmlRoot.toString().replaceAll(_yEdPrefixSub, _yEdPrefix));  // another hack around y: prefix
+    strBuf.write('<?xml version="1.0" encoding="UTF-8" standalone="no"?>');
+    strBuf.write(xmlRoot.toString().replaceAll(_yEdPrefixSub, _yEdPrefix));  // another hack around y: prefix
     return strBuf.toString();
   }
 }
