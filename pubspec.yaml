@@ -4,5 +4,4 @@ author: Filip Hracek <filip.hracek@gmail.com>
 description:  A very simple and hacky reader and writer of graphml
               files.
 dependencies: 
-  xml: 
-    git: https://github.com/prujohn/dart-xml
+  xml: 0.9.3
