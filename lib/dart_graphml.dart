@@ -125,7 +125,7 @@ class GraphML {
     RandomAccessFile raf = f.openSync();
     int len = f.lengthSync();
     List<int> buffer = new List<int>(len);
-    raf.readListSync(buffer, 0, len);
+    raf.readIntoSync(buffer, 0, len);
     raf.close();
     
     String xml = new String.fromCharCodes(buffer);
