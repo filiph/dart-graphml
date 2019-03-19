@@ -14,9 +14,9 @@ class Node {
 
   XmlElement xmlEl;
 
-  Node(this.text, {this.parent: null}) {
-    children = new List<Node>();
-    linkedNodes = new List<Node>();
+  Node(this.text, {this.parent = null}) {
+    children = List<Node>();
+    linkedNodes = List<Node>();
   }
 
   String toString() {
@@ -101,45 +101,41 @@ class GraphML {
   XmlElement xmlRoot;
   XmlElement xmlRootGraph;
 
-  /**
-   * Creates an empty graphml.
-   */
+  /// Creates an empty graphml.
   GraphML() {
-    groupNodes = new List<Node>();
-    nodes = new List<Node>();
+    groupNodes = List<Node>();
+    nodes = List<Node>();
 
-    groupNodeById = new Map<String, Node>();
-    nodeById = new Map<String, Node>();
+    groupNodeById = Map<String, Node>();
+    nodeById = Map<String, Node>();
   }
 
-  /**
-   * Creates the GraphML instance from a valid .graphml file.
-   */
+  /// Creates the GraphML instance from a valid .graphml file.
   GraphML.fromFile(File f) {
     RandomAccessFile raf = f.openSync();
     int len = f.lengthSync();
-    List<int> buffer = new List<int>(len);
+    List<int> buffer = List<int>(len);
     raf.readIntoSync(buffer, 0, len);
     raf.close();
 
-    String xml = new String.fromCharCodes(buffer);
+    String xml = String.fromCharCodes(buffer);
 
     xmlRoot = parse(xml).rootElement;
     xmlRootGraph = xmlRoot.findElements("graph").first;
     assert(xmlRootGraph.getAttribute("id") == "G");
 
-    groupNodes = new List<Node>();
-    nodes = new List<Node>();
+    groupNodes = List<Node>();
+    nodes = List<Node>();
 
-    groupNodeById = new Map<String, Node>();
-    nodeById = new Map<String, Node>();
+    groupNodeById = Map<String, Node>();
+    nodeById = Map<String, Node>();
 
     xmlRootGraph.findAllElements("node").forEach((XmlElement xmlNode) {
       if (xmlNode.attributes
           .any((attr) => attr.name.local == "yfiles.foldertype")) {
         // GroupNode found
         XmlElement nodeLabel = xmlNode.findAllElements("y:NodeLabel").first;
-        Node node = new Node(nodeLabel.text);
+        Node node = Node(nodeLabel.text);
         node.id = xmlNode.getAttribute("id");
         XmlElement nodeGeometry = xmlNode.findAllElements("y:Geometry").first;
         node.x = double.parse(nodeGeometry.getAttribute("x"));
@@ -150,7 +146,7 @@ class GraphML {
       } else {
         // Normal node found
         XmlElement nodeLabel = xmlNode.findAllElements("y:NodeLabel").first;
-        Node node = new Node(nodeLabel.text);
+        Node node = Node(nodeLabel.text);
         node.id = xmlNode.getAttribute("id");
         XmlElement nodeGeometry = xmlNode.findAllElements("y:Geometry").first;
         node.x = double.parse(nodeGeometry.getAttribute("x"));
@@ -264,11 +260,9 @@ class GraphML {
       node.xmlEl = node.createNewNodeXml();
       if (node.parent != null && node.parent.xmlEl != null) {
         // Find the XML in the newly generated graph (the copy).
-        var parent = xmlRootGraph
-            .findAllElements("graph")
-            .singleWhere((el) {
-              return el.getAttribute("id") == '${node.parent.id}:';
-            });
+        var parent = xmlRootGraph.findAllElements("graph").singleWhere((el) {
+          return el.getAttribute("id") == '${node.parent.id}:';
+        });
         parent.children.add(node.xmlEl.copy());
       } else {
         xmlRootGraph.children.add(node.xmlEl.copy());
@@ -332,7 +326,7 @@ class GraphML {
     updateXml();
     xmlRoot.normalize();
 
-    var strBuf = new StringBuffer();
+    var strBuf = StringBuffer();
     strBuf.write('<?xml version="1.0" encoding="UTF-8" standalone="no"?>');
     xmlRoot.writePrettyTo(strBuf, 0, ' ');
     return strBuf.toString();
