@@ -35,19 +35,19 @@ class Node {
     return parse("""
         <node id="$id">
           <data key="d6">
-            <yCOLONShapeNode>
-            <yCOLONGeometry height="30.0" width="100.0" x="$x" y="$y"></yCOLONGeometry>
-            <yCOLONFill color="#FFCC00" transparent="false"></yCOLONFill>
-            <yCOLONBorderStyle color="#000000" type="line" width="1.0"></yCOLONBorderStyle>
-            <yCOLONNodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.1328125" modelName="custom" textColor="#000000" visible="true">$text<yCOLONLabelModel>
-            <yCOLONSmartNodeLabelModel distance="4.0"></yCOLONSmartNodeLabelModel>
-            </yCOLONLabelModel>
-            <yCOLONModelParameter>
-            <yCOLONSmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"></yCOLONSmartNodeLabelModelParameter>
-            </yCOLONModelParameter>
-            </yCOLONNodeLabel>
-            <yCOLONShape type="rectangle"></yCOLONShape>
-            </yCOLONShapeNode>
+            <y:ShapeNode>
+            <y:Geometry height="30.0" width="100.0" x="$x" y="$y"></y:Geometry>
+            <y:Fill color="#FFCC00" transparent="false"></y:Fill>
+            <y:BorderStyle color="#000000" type="line" width="1.0"></y:BorderStyle>
+            <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.1328125" modelName="custom" textColor="#000000" visible="true">$text<y:LabelModel>
+            <y:SmartNodeLabelModel distance="4.0"></y:SmartNodeLabelModel>
+            </y:LabelModel>
+            <y:ModelParameter>
+            <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"></y:SmartNodeLabelModelParameter>
+            </y:ModelParameter>
+            </y:NodeLabel>
+            <y:Shape type="rectangle"></y:Shape>
+            </y:ShapeNode>
           </data>
         </node>
     """).rootElement;
@@ -58,31 +58,31 @@ class Node {
       <node id="$id" yfiles.foldertype="group">
          <data key="d4"></data>
          <data key="d6">
-            <yCOLONProxyAutoBoundsNode>
-               <yCOLONRealizers active="0">
-                  <yCOLONGroupNode>
-                     <yCOLONGeometry height="300.0" width="212.21547619047618" x="$x" y="$y"></yCOLONGeometry>
-                     <yCOLONFill color="#F5F5F5" transparent="false"></yCOLONFill>
-                     <yCOLONBorderStyle color="#000000" type="dashed" width="1.0"></yCOLONBorderStyle>
-                     <yCOLONNodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.666015625" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="212.21547619047618" x="0.0" y="0.0">$text</yCOLONNodeLabel>
-                     <yCOLONShape type="roundrectangle"></yCOLONShape>
-                     <yCOLONState closed="false" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"></yCOLONState>
-                     <yCOLONNodeBounds considerNodeLabelSize="true"></yCOLONNodeBounds>
-                     <yCOLONInsets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"></yCOLONInsets>
-                     <yCOLONBorderInsets bottom="0" bottomF="0.0" left="1" leftF="1.0003069196429237" right="1" rightF="1.0002077132936051" top="0" topF="0.0"></yCOLONBorderInsets>
-                  </yCOLONGroupNode>
-                  <yCOLONGroupNode>
-                     <yCOLONGeometry height="50.0" width="50.0" x="47.8857142857143" y="-36.666015625"></yCOLONGeometry>
-                     <yCOLONFill color="#F5F5F5" transparent="false"></yCOLONFill>
-                     <yCOLONBorderStyle color="#000000" type="dashed" width="1.0"></yCOLONBorderStyle>
-                     <yCOLONNodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.666015625" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="63.75830078125" x="0.0" y="0.0">$text (folded)</yCOLONNodeLabel>
-                     <yCOLONShape type="roundrectangle"></yCOLONShape>
-                     <yCOLONState closed="true" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"></yCOLONState>
-                     <yCOLONInsets bottom="5" bottomF="5.0" left="5" leftF="5.0" right="5" rightF="5.0" top="5" topF="5.0"></yCOLONInsets>
-                     <yCOLONBorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"></yCOLONBorderInsets>
-                  </yCOLONGroupNode>
-               </yCOLONRealizers>
-            </yCOLONProxyAutoBoundsNode>
+            <y:ProxyAutoBoundsNode>
+               <y:Realizers active="0">
+                  <y:GroupNode>
+                     <y:Geometry height="300.0" width="212.21547619047618" x="$x" y="$y"></y:Geometry>
+                     <y:Fill color="#F5F5F5" transparent="false"></y:Fill>
+                     <y:BorderStyle color="#000000" type="dashed" width="1.0"></y:BorderStyle>
+                     <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.666015625" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="212.21547619047618" x="0.0" y="0.0">$text</y:NodeLabel>
+                     <y:Shape type="roundrectangle"></y:Shape>
+                     <y:State closed="false" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"></y:State>
+                     <y:NodeBounds considerNodeLabelSize="true"></y:NodeBounds>
+                     <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"></y:Insets>
+                     <y:BorderInsets bottom="0" bottomF="0.0" left="1" leftF="1.0003069196429237" right="1" rightF="1.0002077132936051" top="0" topF="0.0"></y:BorderInsets>
+                  </y:GroupNode>
+                  <y:GroupNode>
+                     <y:Geometry height="50.0" width="50.0" x="47.8857142857143" y="-36.666015625"></y:Geometry>
+                     <y:Fill color="#F5F5F5" transparent="false"></y:Fill>
+                     <y:BorderStyle color="#000000" type="dashed" width="1.0"></y:BorderStyle>
+                     <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.666015625" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="63.75830078125" x="0.0" y="0.0">$text (folded)</y:NodeLabel>
+                     <y:Shape type="roundrectangle"></y:Shape>
+                     <y:State closed="true" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"></y:State>
+                     <y:Insets bottom="5" bottomF="5.0" left="5" leftF="5.0" right="5" rightF="5.0" top="5" topF="5.0"></y:Insets>
+                     <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"></y:BorderInsets>
+                  </y:GroupNode>
+               </y:Realizers>
+            </y:ProxyAutoBoundsNode>
          </data>
          <graph edgedefault="directed" id="$id:">
          </graph>
@@ -97,9 +97,6 @@ class GraphML {
 
   Map<String, Node> groupNodeById;
   Map<String, Node> nodeById;
-
-  static const String _yEdPrefix = "y:";
-  static const String _yEdPrefixSub = "yCOLON";
 
   XmlElement xmlRoot;
   XmlElement xmlRootGraph;
@@ -127,13 +124,6 @@ class GraphML {
 
     String xml = new String.fromCharCodes(buffer);
 
-    // use hacks to get rid of nodes that dart-xml can't handle
-    // TODO: remove -- we don't need this anymore
-    xml = xml
-        .replaceAll(new RegExp(r"<\?.*?\?>"), "") // get rid of PI node(s)
-        .replaceAll("<$_yEdPrefix", "<$_yEdPrefixSub") // get rid of `y:`
-        .replaceAll("</$_yEdPrefix", "</$_yEdPrefixSub");
-
     xmlRoot = parse(xml).rootElement;
     xmlRootGraph = xmlRoot.findElements("graph").first;
     assert(xmlRootGraph.getAttribute("id") == "G");
@@ -149,11 +139,11 @@ class GraphML {
           .any((attr) => attr.name.local == "yfiles.foldertype")) {
         // GroupNode found
         XmlElement nodeLabel =
-            xmlNode.findAllElements("${_yEdPrefixSub}NodeLabel").first;
+            xmlNode.findAllElements("y:NodeLabel").first;
         Node node = new Node(nodeLabel.text);
         node.id = xmlNode.getAttribute("id");
         XmlElement nodeGeometry =
-            xmlNode.findAllElements("${_yEdPrefixSub}Geometry").first;
+            xmlNode.findAllElements("y:Geometry").first;
         node.x = double.parse(nodeGeometry.getAttribute("x"));
         node.y = double.parse(nodeGeometry.getAttribute("y"));
         node.xmlEl = xmlNode;
@@ -162,11 +152,11 @@ class GraphML {
       } else {
         // Normal node found
         XmlElement nodeLabel =
-            xmlNode.findAllElements("${_yEdPrefixSub}NodeLabel").first;
+            xmlNode.findAllElements("y:NodeLabel").first;
         Node node = new Node(nodeLabel.text);
         node.id = xmlNode.getAttribute("id");
         XmlElement nodeGeometry =
-            xmlNode.findAllElements("${_yEdPrefixSub}Geometry").first;
+            xmlNode.findAllElements("y:Geometry").first;
         node.x = double.parse(nodeGeometry.getAttribute("x"));
         node.y = double.parse(nodeGeometry.getAttribute("y"));
         node.xmlEl = xmlNode;
@@ -252,12 +242,12 @@ class GraphML {
 //    XmlElement newXml = XML.parse("""
 //      <edge id="e${_edgeNumber++}" source="${source.id}" target="${target.id}">
 //         <data key="d10">
-//            <yCOLONPolyLineEdge>
-//               <yCOLONPath sx="-39.47216796875" sy="15.0" tx="-17.26220703125" ty="-15.0"></yCOLONPath>
-//               <yCOLONLineStyle color="#000000" type="line" width="1.0"></yCOLONLineStyle>
-//               <yCOLONArrows source="none" target="standard"></yCOLONArrows>
-//               <yCOLONBendStyle smoothed="false"></yCOLONBendStyle>
-//            </yCOLONPolyLineEdge>
+//            <y:PolyLineEdge>
+//               <y:Path sx="-39.47216796875" sy="15.0" tx="-17.26220703125" ty="-15.0"></y:Path>
+//               <y:LineStyle color="#000000" type="line" width="1.0"></y:LineStyle>
+//               <y:Arrows source="none" target="standard"></y:Arrows>
+//               <y:BendStyle smoothed="false"></y:BendStyle>
+//            </y:PolyLineEdge>
 //         </data>
 //      </edge>
 //    """);
@@ -313,7 +303,7 @@ class GraphML {
             <data key="d7"></data>
          </graph>
          <data key="d0">
-            <yCOLONResources></yCOLONResources>
+            <y:Resources></y:Resources>
          </data>
       </graphml>
     """).rootElement;
@@ -323,12 +313,12 @@ class GraphML {
     return parse("""
       <edge id="e${_edgeNumber++}" source="${source.id}" target="${target.id}">
          <data key="d10">
-            <yCOLONPolyLineEdge>
-               <yCOLONPath sx="-39.47216796875" sy="15.0" tx="-17.26220703125" ty="-15.0"></yCOLONPath>
-               <yCOLONLineStyle color="#000000" type="line" width="1.0"></yCOLONLineStyle>
-               <yCOLONArrows source="none" target="standard"></yCOLONArrows>
-               <yCOLONBendStyle smoothed="false"></yCOLONBendStyle>
-            </yCOLONPolyLineEdge>
+            <y:PolyLineEdge>
+               <y:Path sx="-39.47216796875" sy="15.0" tx="-17.26220703125" ty="-15.0"></y:Path>
+               <y:LineStyle color="#000000" type="line" width="1.0"></y:LineStyle>
+               <y:Arrows source="none" target="standard"></y:Arrows>
+               <y:BendStyle smoothed="false"></y:BendStyle>
+            </y:PolyLineEdge>
          </data>
       </edge>
     """).rootElement;
@@ -345,9 +335,7 @@ class GraphML {
     updateXml();
 
     var strBuf = new StringBuffer();
-    strBuf.write('<?xml version="1.0" encoding="UTF-8" standalone="no"?>');
-    strBuf.write(xmlRoot.toString().replaceAll(
-        _yEdPrefixSub, _yEdPrefix)); // another hack around y: prefix
+    xmlRoot.writePrettyTo(strBuf, 0, ' ');
     return strBuf.toString();
   }
 }
