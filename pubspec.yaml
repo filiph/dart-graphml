@@ -1,7 +1,7 @@
 name:  graphml
-version: 0.0.3
+version: 0.1.0
 author: Filip Hracek <filip.hracek@gmail.com>
-description:  A very simple and hacky reader and writer of graphml
-              files.
+description: >
+  A very simple and hacky reader and writer of graphml files.
 dependencies: 
-  xml: 0.9.3
+  xml: ^3.4.1

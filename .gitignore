@@ -1,4 +1,8 @@
-pubspec.lock
-packages
-**/packages
-example/new.graphml
+.buildlog
+.DS_Store
+.idea
+.packages
+.pub/
+.dart_tool/
+build/
+*.scssc

@@ -1,7 +1,6 @@
 library Dart_GraphML;
 
 import 'dart:io';
-import 'dart:math';
 import 'package:xml/xml.dart';
 
 class Node {
@@ -12,18 +11,18 @@ class Node {
   Node parent;
   List<Node> children;
   List<Node> linkedNodes;
-  
+
   XmlElement xmlEl;
-  
-  Node(this.text, {this.parent:null}) {
+
+  Node(this.text, {this.parent: null}) {
     children = new List<Node>();
     linkedNodes = new List<Node>();
   }
-  
+
   String toString() {
     return "$text [$id]";
   }
-  
+
   get fullText {
     if (parent != null) {
       return "${parent.text}: $text";
@@ -31,9 +30,9 @@ class Node {
       return text;
     }
   }
-  
+
   XmlElement createNewNodeXml() {
-    return XML.parse("""
+    return parse("""
         <node id="$id">
           <data key="d6">
             <yCOLONShapeNode>
@@ -51,11 +50,11 @@ class Node {
             </yCOLONShapeNode>
           </data>
         </node>
-    """);
+    """).rootElement;
   }
-  
+
   XmlElement createNewGroupNodeXml() {
-    return XML.parse("""
+    return parse("""
       <node id="$id" yfiles.foldertype="group">
          <data key="d4"></data>
          <data key="d6">
@@ -88,36 +87,34 @@ class Node {
          <graph edgedefault="directed" id="$id:">
          </graph>
       </node>
-    """);
+    """).rootElement;
   }
 }
 
 class GraphML {
   List<Node> groupNodes;
   List<Node> nodes;
-  
-  Map<String,Node> groupNodeById;
-  Map<String,Node> nodeById;
-  
-  const String _yEdPrefix = "y:";
-  const String _yEdPrefixSub = "yCOLON";
-  
+
+  Map<String, Node> groupNodeById;
+  Map<String, Node> nodeById;
+
+  static const String _yEdPrefix = "y:";
+  static const String _yEdPrefixSub = "yCOLON";
+
   XmlElement xmlRoot;
   XmlElement xmlRootGraph;
-  
+
   /**
    * Creates an empty graphml.
    */
   GraphML() {
     groupNodes = new List<Node>();
     nodes = new List<Node>();
-    
-    groupNodeById = new Map<String,Node>();
-    nodeById = new Map<String,Node>();
+
+    groupNodeById = new Map<String, Node>();
+    nodeById = new Map<String, Node>();
   }
 
-  
-  
   /**
    * Creates the GraphML instance from a valid .graphml file.
    */
@@ -127,64 +124,72 @@ class GraphML {
     List<int> buffer = new List<int>(len);
     raf.readIntoSync(buffer, 0, len);
     raf.close();
-    
+
     String xml = new String.fromCharCodes(buffer);
-    
-    // use hacks to get rid of nodes that dart-xml can't handle  
+
+    // use hacks to get rid of nodes that dart-xml can't handle
+    // TODO: remove -- we don't need this anymore
     xml = xml
-        .replaceAll(new RegExp(r"<\?.*?\?>"), "")  // get rid of PI node(s)
-        .replaceAll("<$_yEdPrefix", "<$_yEdPrefixSub")  // get rid of `y:`
+        .replaceAll(new RegExp(r"<\?.*?\?>"), "") // get rid of PI node(s)
+        .replaceAll("<$_yEdPrefix", "<$_yEdPrefixSub") // get rid of `y:`
         .replaceAll("</$_yEdPrefix", "</$_yEdPrefixSub");
-    
-    xmlRoot = XML.parse(xml);
-    xmlRootGraph = xmlRoot.query({"id": "G"})[0];
-    
+
+    xmlRoot = parse(xml).rootElement;
+    xmlRootGraph = xmlRoot.findElements("graph").first;
+    assert(xmlRootGraph.getAttribute("id") == "G");
+
     groupNodes = new List<Node>();
     nodes = new List<Node>();
-    
-    groupNodeById = new Map<String,Node>();
-    nodeById = new Map<String,Node>();
-    
-    xmlRoot.queryAll("node").forEach((XmlElement xmlNode) {
-      if (xmlNode.attributes.containsKey("yfiles.foldertype")) {
+
+    groupNodeById = new Map<String, Node>();
+    nodeById = new Map<String, Node>();
+
+    xmlRootGraph.findAllElements("node").forEach((XmlElement xmlNode) {
+      if (xmlNode.attributes
+          .any((attr) => attr.name.local == "yfiles.foldertype")) {
         // GroupNode found
-        XmlElement nodeLabel = xmlNode.query("${_yEdPrefixSub}NodeLabel")[0];
+        XmlElement nodeLabel =
+            xmlNode.findAllElements("${_yEdPrefixSub}NodeLabel").first;
         Node node = new Node(nodeLabel.text);
-        node.id = xmlNode.attributes['id'];
-        XmlElement nodeGeometry = xmlNode.query("${_yEdPrefixSub}Geometry")[0];
-        node.x = double.parse(nodeGeometry.attributes["x"]); 
-        node.y = double.parse(nodeGeometry.attributes["y"]);
+        node.id = xmlNode.getAttribute("id");
+        XmlElement nodeGeometry =
+            xmlNode.findAllElements("${_yEdPrefixSub}Geometry").first;
+        node.x = double.parse(nodeGeometry.getAttribute("x"));
+        node.y = double.parse(nodeGeometry.getAttribute("y"));
         node.xmlEl = xmlNode;
         groupNodes.add(node);
         groupNodeById[node.id] = node;
       } else {
         // Normal node found
-        XmlElement nodeLabel = xmlNode.query("${_yEdPrefixSub}NodeLabel")[0];
+        XmlElement nodeLabel =
+            xmlNode.findAllElements("${_yEdPrefixSub}NodeLabel").first;
         Node node = new Node(nodeLabel.text);
-        node.id = xmlNode.attributes['id'];
-        XmlElement nodeGeometry = xmlNode.query("${_yEdPrefixSub}Geometry")[0];
-        node.x = double.parse(nodeGeometry.attributes["x"]); 
-        node.y = double.parse(nodeGeometry.attributes["y"]);
+        node.id = xmlNode.getAttribute("id");
+        XmlElement nodeGeometry =
+            xmlNode.findAllElements("${_yEdPrefixSub}Geometry").first;
+        node.x = double.parse(nodeGeometry.getAttribute("x"));
+        node.y = double.parse(nodeGeometry.getAttribute("y"));
         node.xmlEl = xmlNode;
         if (node.id.contains("::")) {
           // belongs to a groupNode (at least in yEd notation)
           // TODO: less yEd, more generic - group nodes have their nodes inside
-          node.parent = groupNodeById[node.id.split("::")[0]];
+          node.parent = groupNodeById[node.id.split("::").first];
           node.parent.children.add(node);
         }
         nodes.add(node);
         nodeById[node.id] = node;
       }
     });
-    
-    xmlRoot.queryAll("edge").forEach((XmlElement edge) {
-      nodeById[edge.attributes['source']]
-          .linkedNodes.add(nodeById[edge.attributes['target']]);
+
+    xmlRoot.findAllElements("edge").forEach((XmlElement edge) {
+      nodeById[edge.getAttribute("source")]
+          .linkedNodes
+          .add(nodeById[edge.getAttribute("target")]);
     });
   }
-  
+
   static int _nodeNumber = 10000;
-  
+
   void addNode(Node node) {
     if (node.parent != null) {
       node.id = "${node.parent.id}::${_nodeNumber++}";
@@ -192,10 +197,16 @@ class GraphML {
       node.id = "n${_nodeNumber++}";
     }
     nodes.add(node);
-    
-    if (node.x == null) {node.x = 0;};
-    if (node.y == null) {node.y = 0;};
-    
+
+    if (node.x == null) {
+      node.x = 0;
+    }
+    ;
+    if (node.y == null) {
+      node.y = 0;
+    }
+    ;
+
 //    XmlElement newXml = node.createNewNodeXml();
 //
 //    if (node.parent != null && node.parent.xmlEl != null) {
@@ -203,10 +214,10 @@ class GraphML {
 //    } else {
 //      xmlRootGraph.addChild(newXml);
 //    }
-//    
+//
 //    node.xmlEl = newXml;
   }
-  
+
   void addGroupNode(Node node) {
     if (node.parent != null) {
       node.id = "${node.parent.id}::${_nodeNumber++}";
@@ -214,26 +225,30 @@ class GraphML {
       node.id = "n${_nodeNumber++}";
     }
     groupNodes.add(node);
-    
-    if (node.x == null) {node.x = 0;};
-    if (node.y == null) {node.y = 0;};
-    
 
-    
+    if (node.x == null) {
+      node.x = 0;
+    }
+    ;
+    if (node.y == null) {
+      node.y = 0;
+    }
+    ;
+
 //    if (node.parent != null && node.parent.xmlEl != null) {
 //      (node.parent.xmlEl.query("graph")[0] as XmlElement).addChild(newXml);
 //    } else {
 //      xmlRootGraph.addChild(newXml);
 //    }
-//    
+//
 //    node.xmlEl = newXml;
   }
-  
+
   static int _edgeNumber = 10000;
-  
+
   void addEdge(Node source, Node target) {
     source.linkedNodes.add(target);
-    
+
 //    XmlElement newXml = XML.parse("""
 //      <edge id="e${_edgeNumber++}" source="${source.id}" target="${target.id}">
 //         <data key="d10">
@@ -246,37 +261,42 @@ class GraphML {
 //         </data>
 //      </edge>
 //    """);
-//    
+//
 //    xmlRootGraph.addChild(newXml);
   }
-  
+
   void createXml() {
     xmlRoot = createNewXml();
-    xmlRootGraph = xmlRoot.query({"id": "G"})[0];
-    
+    xmlRootGraph = xmlRoot.findElements("graph").first;
+    assert(xmlRootGraph.getAttribute("id") == "G");
+
     groupNodes.forEach((Node groupNode) {
       groupNode.xmlEl = groupNode.createNewGroupNodeXml();
-      xmlRootGraph.addChild(groupNode.xmlEl);
+      xmlRootGraph.children.add(groupNode.xmlEl.copy());
     });
-    
+
     nodes.forEach((Node node) {
       node.xmlEl = node.createNewNodeXml();
       if (node.parent != null && node.parent.xmlEl != null) {
-        (node.parent.xmlEl.query("graph")[0] as XmlElement).addChild(node.xmlEl);
+        node.parent.xmlEl
+            .findElements("graph")
+            .first
+            .children
+            .add(node.xmlEl.copy());
       } else {
-        xmlRootGraph.addChild(node.xmlEl);
+        xmlRootGraph.children.add(node.xmlEl.copy());
       }
     });
-    
+
     nodes.forEach((Node source) {
       source.linkedNodes.forEach((Node target) {
-        xmlRootGraph.addChild(createNewEdgeXml(source, target));
+        xmlRootGraph.children.add(createNewEdgeXml(source, target).copy());
       });
     });
   }
-  
+
   XmlElement createNewXml() {
-    return XML.parse("""
+    return parse("""
       <graphml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:y="http://www.yworks.com/xml/graphml" xmlns:yed="http://www.yworks.com/xml/yed/3" xmlns="http://graphml.graphdrawing.org/xmlns" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd">
          <key for="graphml" id="d0" yfiles.type="resources"></key>
          <key for="port" id="d1" yfiles.type="portgraphics"></key>
@@ -296,11 +316,11 @@ class GraphML {
             <yCOLONResources></yCOLONResources>
          </data>
       </graphml>
-    """);
+    """).rootElement;
   }
-  
+
   XmlElement createNewEdgeXml(Node source, Node target) {
-    return XML.parse("""
+    return parse("""
       <edge id="e${_edgeNumber++}" source="${source.id}" target="${target.id}">
          <data key="d10">
             <yCOLONPolyLineEdge>
@@ -311,22 +331,23 @@ class GraphML {
             </yCOLONPolyLineEdge>
          </data>
       </edge>
-    """);
+    """).rootElement;
   }
-  
+
   void updateXml() {
     // TODO: just update what we have, add new stuff
     createXml();
   }
-  
+
   // TODO: get xmlGraph - first call updateXml
-  
+
   String toString() {
     updateXml();
-    
+
     var strBuf = new StringBuffer();
     strBuf.write('<?xml version="1.0" encoding="UTF-8" standalone="no"?>');
-    strBuf.write(xmlRoot.toString().replaceAll(_yEdPrefixSub, _yEdPrefix));  // another hack around y: prefix
+    strBuf.write(xmlRoot.toString().replaceAll(
+        _yEdPrefixSub, _yEdPrefix)); // another hack around y: prefix
     return strBuf.toString();
   }
 }
