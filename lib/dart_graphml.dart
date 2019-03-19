@@ -138,28 +138,24 @@ class GraphML {
       if (xmlNode.attributes
           .any((attr) => attr.name.local == "yfiles.foldertype")) {
         // GroupNode found
-        XmlElement nodeLabel =
-            xmlNode.findAllElements("y:NodeLabel").first;
+        XmlElement nodeLabel = xmlNode.findAllElements("y:NodeLabel").first;
         Node node = new Node(nodeLabel.text);
         node.id = xmlNode.getAttribute("id");
-        XmlElement nodeGeometry =
-            xmlNode.findAllElements("y:Geometry").first;
+        XmlElement nodeGeometry = xmlNode.findAllElements("y:Geometry").first;
         node.x = double.parse(nodeGeometry.getAttribute("x"));
         node.y = double.parse(nodeGeometry.getAttribute("y"));
-        node.xmlEl = xmlNode;
+        node.xmlEl = xmlNode.copy();
         groupNodes.add(node);
         groupNodeById[node.id] = node;
       } else {
         // Normal node found
-        XmlElement nodeLabel =
-            xmlNode.findAllElements("y:NodeLabel").first;
+        XmlElement nodeLabel = xmlNode.findAllElements("y:NodeLabel").first;
         Node node = new Node(nodeLabel.text);
         node.id = xmlNode.getAttribute("id");
-        XmlElement nodeGeometry =
-            xmlNode.findAllElements("y:Geometry").first;
+        XmlElement nodeGeometry = xmlNode.findAllElements("y:Geometry").first;
         node.x = double.parse(nodeGeometry.getAttribute("x"));
         node.y = double.parse(nodeGeometry.getAttribute("y"));
-        node.xmlEl = xmlNode;
+        node.xmlEl = xmlNode.copy();
         if (node.id.contains("::")) {
           // belongs to a groupNode (at least in yEd notation)
           // TODO: less yEd, more generic - group nodes have their nodes inside
@@ -178,6 +174,7 @@ class GraphML {
     });
   }
 
+  /// TODO: make this not static and allow to seed this
   static int _nodeNumber = 10000;
 
   void addNode(Node node) {
@@ -191,11 +188,9 @@ class GraphML {
     if (node.x == null) {
       node.x = 0;
     }
-    ;
     if (node.y == null) {
       node.y = 0;
     }
-    ;
 
 //    XmlElement newXml = node.createNewNodeXml();
 //
@@ -268,11 +263,13 @@ class GraphML {
     nodes.forEach((Node node) {
       node.xmlEl = node.createNewNodeXml();
       if (node.parent != null && node.parent.xmlEl != null) {
-        node.parent.xmlEl
-            .findElements("graph")
-            .first
-            .children
-            .add(node.xmlEl.copy());
+        // Find the XML in the newly generated graph (the copy).
+        var parent = xmlRootGraph
+            .findAllElements("graph")
+            .singleWhere((el) {
+              return el.getAttribute("id") == '${node.parent.id}:';
+            });
+        parent.children.add(node.xmlEl.copy());
       } else {
         xmlRootGraph.children.add(node.xmlEl.copy());
       }
@@ -333,8 +330,10 @@ class GraphML {
 
   String toString() {
     updateXml();
+    xmlRoot.normalize();
 
     var strBuf = new StringBuffer();
+    strBuf.write('<?xml version="1.0" encoding="UTF-8" standalone="no"?>');
     xmlRoot.writePrettyTo(strBuf, 0, ' ');
     return strBuf.toString();
   }
